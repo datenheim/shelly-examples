@@ -8,6 +8,20 @@ The received values will be printed as a table.
 Copy or rename `_shelly_conf.py` to `my_shelly_conf.py` and edit this file as follows:
 - in class `shelly_host` fill in the `server_url` and `auth_key` [^1].
 - in class `shelly_devices` fill the list `idn` with tuples of the ID(s)[^2]<br>and a nice name for all your helly Plug S (or similar) device(s).
+```
+class shelly_host:
+    server_url = 'paste_your_cloud_servers_URL_here'     # for instance 'https://shelly-44-eu.shelly.cloud'
+    auth_key = 'paste_your_auth_key_here'                # the very long key you copied from the cloud
+    url_device_status = server_url + '/device/status'    # must not be changed normally
+
+
+class shelly_devices:
+    # use the hex device id, and a nice name for the device
+    idn = [
+        ('000001', 'Workbench'),
+        ('f2d000', 'Network'),
+        ]
+```
 
 ### Output
 ```
@@ -17,7 +31,7 @@ Copy or rename `_shelly_conf.py` to `my_shelly_conf.py` and edit this file as fo
 +--------------+---------------+-----------+-----------+-----------+
 |    Workbench |        117.13 |    93.399 |   101.384 |   103.579 |
 |      Network |         70.84 |    71.192 |    69.553 |    69.458 |
-|     Steambox |             0 |         0 |         0 |         0 |
+|     Steambox |          0.00 |         0 |         0 |         0 |
 | Coolermaster |        103.68 |   107.443 |   114.569 |   115.587 |
 |   Meter_Gdhg |          8.98 |      15.3 |    15.254 |    14.712 |
 +--------------+---------------+-----------+-----------+-----------+
