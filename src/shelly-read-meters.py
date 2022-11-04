@@ -6,24 +6,14 @@ from tqdm import trange
 
 # create a copy from _conf.py, name it my_conf.py and fill in your data
 try:
-    from my_conf import shelly_host as my_host
+    from my_shelly_conf import shelly_host, shelly_devices
 except ImportError:
     try:
-        from _conf import shelly_host as my_host
+        from _shelly_conf import shelly_host, shelly_devices
     except ImportError:
-        print("You should copy _conf.py to my_conf.py and fill it with your data!")
+        print("You should copy or rename _shelly_conf.py to my_shelly_conf.py and fill it with your actual data!")
         print(sys.exc_info())
         exit()
-try:
-    from my_conf import shelly_devices as my_devices
-except ImportError:
-    try:
-        from _conf import shelly_devices as my_devices
-    except ImportError:
-        print("You should copy _conf.py to my_conf.py and fill it with your data!")
-        print(sys.exc_info())
-        exit()
-
 
 # defining globals
 table = PrettyTable()
@@ -31,22 +21,24 @@ table.field_names = ['Device Name', 'Current Watts','Counter 1','Counter 2','Cou
 table.align = 'r'
 
 # main
-if __name__ == '__main__':
-    for num in trange(len(my_devices.id)):
+if __name__ != '__main__':
+    print("This code should not be used as package. Exiting...")
+else:
+    for num in trange(len(shelly_devices.id)):
         try:
             response = requests.post(
-                my_host.url_device_status,
-                data={'id': my_devices.id[num],'auth_key': my_host.auth_key}
+                shelly_host.url_device_status,
+                data={'id': shelly_devices.id[num],'auth_key': shelly_host.auth_key}
                 )
-        except:
-            print(" We tryied to request data for device with ID:", my_devices.id[num], "and name:", my_devices.name[num])
+        except Exception as this_ex:
+            print(" We tryied to request data for device with ID:", shelly_devices.id[num], "and name:", shelly_devices.name[num])
+            print("We caught Exception: ", this_ex)
             print("Please check the IDs and the url in your my_conf.py file.")
-            exit()
+            raise this_ex
         content = response.json()
         row = [
-            my_devices.name[num],
+            shelly_devices.name[num],
             content['data']['device_status']['meters'][0]['power']] + \
-            content['data']['device_status']['meters'][0]['counters'
-            ]
+            content['data']['device_status']['meters'][0]['counters']
         table.add_row(row)
     print(table)

@@ -1,4 +1,4 @@
-my_conf.py
+my_*_conf.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
