@@ -15,30 +15,42 @@ except ImportError:
         print(sys.exc_info())
         exit()
 
-# defining globals
+# create a table
 table = PrettyTable()
+# add a header to the table
 table.field_names = ['Device Name', 'Current Watts','Counter 1','Counter 2','Counter 3']
+# define right alignment for all columns
 table.align = 'r'
 
-# main
+# main program
 if __name__ != '__main__':
     print("This code should not be used as package. Exiting...")
 else:
-    for num in trange(len(shelly_devices.id)):
+    # try to request the data for each device in the list
+    for num in trange(len(shelly_devices.idn)):
         try:
             response = requests.post(
                 shelly_host.url_device_status,
-                data={'id': shelly_devices.id[num],'auth_key': shelly_host.auth_key}
+                data={'id': shelly_devices.idn[num][0],'auth_key': shelly_host.auth_key}
                 )
         except Exception as this_ex:
-            print(" We tryied to request data for device with ID:", shelly_devices.id[num], "and name:", shelly_devices.name[num])
+            print(" We tryied to request data for device with ID:", shelly_devices.idn[num][0], "and name:", shelly_devices.idn[num][1])
             print("We caught Exception: ", this_ex)
             print("Please check the IDs and the url in your my_conf.py file.")
             raise this_ex
+        
+        # decide the response to a json dictionary
         content = response.json()
-        row = [
-            shelly_devices.name[num],
-            content['data']['device_status']['meters'][0]['power']] + \
-            content['data']['device_status']['meters'][0]['counters']
-        table.add_row(row)
+        
+        # grab name, watthours and counters from the response
+        dna = shelly_devices.idn[num][1]
+        # format the whathours a bit nicer
+        whf = float(content['data']['device_status']['meters'][0]['power'])
+        whs = f'{whf:.2f}'
+        ctl = content['data']['device_status']['meters'][0]['counters']
+        
+        # add all that to the table as a new row
+        table.add_row([dna, whs] + ctl)
+
+    # finally print the table
     print(table)

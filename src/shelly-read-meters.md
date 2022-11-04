@@ -5,14 +5,9 @@ This example collects the current power and counter values from one or many shel
 The received values will be printed as a table.
 
 ### Preparations
-Just copy `_conf.py` to `my_conf.py` and fill in the proper valus from your shelly cloud account.
-You can get the `server_url` and `auth_key` from either the Android App or from your login on https://home.shelly.cloud.
-
-Next fill the lists `id` with the ID of all your shelly Plug S (or similar) devices. You have to use the hexadcimal ID given in the devices Settings/Device Info/Device ID field.
-
-Finally you can assign a readable name in the list `name` that corresponds to each ID in the former list.
-
-Take care that both lists have the same number of entries!
+Copy or rename `_shelly_conf.py` to `my_shelly_conf.py` and edit this file as follows:
+- in class `shelly_host` fill in the `server_url` and `auth_key` [^1].
+- in class `shelly_devices` fill the list `idn` with tuples of the ID(s)[^2]<br>and a nice name for all your helly Plug S (or similar) device(s).
 
 ### Output
 ```
@@ -34,3 +29,6 @@ With shelly devices you have the choice to __*EITHER*__ connect them to shelly c
 This python example is just a first step to get the current readings of a number of cloud connected shelly Plug S devices for __further analysis__. I put it up in the hope it will help somebody.
 
 By "further analysis" one could imagine a Linux service that regularly polls the current power state from shelly cloud and publishes these to an MQTT broker - and thus get's you the best of both worlds: have the shelly cloud & App and also get the data on your choice of MQTT broker. If you are interested in such an example stay tuned.
+
+[^1]:You get them these parameters from either the Shelly Android App or from your login on [https://home.shelly.cloud](https://home.shelly.cloud) by opening the `Menu/User Settings/Authorization Cloud Key`.
+[^2]: You have to use the hexadcimal ID given in the devices Settings/Device Info/Device ID field!
