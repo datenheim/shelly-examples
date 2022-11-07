@@ -1,4 +1,4 @@
-## How to play with cloud connected shelly devices
+# How to play with cloud connected shelly devices
 In this repository I'll document some experiments with shelly devices that are connected to the shelly cloud.
 The experiments aim to make use of the devices data while keeping them connected to the shelly cloud and thus being able to use the shelly smartphone App.
 
@@ -6,21 +6,36 @@ While shelly devices can natively connect to an MQTT broker afaik it implies tha
 
 All examples here try to overcome this limitation by getting the data via the shelly cloud API.
 
-## Shelly Cloud Example 1: `shelly-read-meters.py`
+**Please read ech examples individual readme for further details. The mentioned preparations must only be done once - they cover all examples.**
+
+# Examples
+
+## Shelly Cloud Example 1: [`shelly-list-devices.py`](src/shelly-list-devices.md)
+
+This example produces a list of all devices connected to your cloud shelly.cloud account.
+
+It also checks if they have the feature of power metering, and if so, displays their latest power measurement.
+
+### Output
+```
++-----------+---------+--------+------------+---------+-----------+
+| Device ID |   Code  | Online |    Wifi    | Meters? | Power [W] |
++-----------+---------+--------+------------+---------+-----------+
+|   bc3721  | SHPLG-S |  True  |  Mondtau   |    1    |    0.00   |
+|   22183e  | SHPLG-S |  True  |  Mondtau   |    1    |   96.68   |
+|   22962d  | SHPLG-S |  True  |  Mondtau   |    1    |   119.86  |
+|   2296f0  | SHPLG-S |  True  |  Mondtau   |    1    |   70.57   |
+|   ecb83f  | SHPLG-S |  True  | MONDSCHEIN |    1    |   31.90   |
++-----------+---------+--------+------------+---------+-----------+
+```
+### Purpose
+Basically to get a list of all the devices that are of a specific type.
+You can use the `code` key to distinguish them (here `SHPLG-S` means `Shelly Plug-S`).
+For instance a list of all Shelly PlugS devices could also be used in example 2.
+
+## Shelly Cloud Example 2: [`shelly-read-meters.py`](src/shelly-read-meters.md)
 
 This example collects the current power and counter values from one or many shelly Plug S devices which are connected to the shelly cloud.
-
-The received values will be printed as a table.
-
-### Preparations
-Just copy `_conf.py` to `my_conf.py` and fill in the proper valus from your shelly cloud account.
-You can get the `server_url` and `auth_key` from either the Android App or from your login on https://home.shelly.cloud.
-
-Next fill the lists `id` with the ID of all your shelly Plug S (or similar) devices. You have to use the hexadcimal ID given in the devices Settings/Device Info/Device ID field.
-
-Finally you can assign a readable name in the list `name` that corresponds to each ID in the former list.
-
-Take care that both lists have the same number of entries!
 
 ### Output
 ```
@@ -36,7 +51,7 @@ Take care that both lists have the same number of entries!
 +--------------+---------------+-----------+-----------+-----------+--------+--------+
 ```
 
-### Final thoughts
+# Final thoughts
 With shelly devices you have the choice to __*EITHER*__ connect them to shelly cloud and make use of the shelly App __*OR*__ connect them to a MQTT broker of your choice. In the latter case you will loose the control via the Android App afaik.
 
 This python example is just a first step to get the current readings of a number of cloud connected shelly Plug S devices for __further analysis__. I put it up in the hope it will help somebody.
