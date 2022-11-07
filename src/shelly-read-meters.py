@@ -6,7 +6,7 @@ from tqdm import trange
 
 # create a copy from _conf.py, name it my_conf.py and fill in your data
 try:
-    from my_shelly_conf import shelly_host, shelly_devices
+    from my_shelly_conf import shelly_host, shelly_rqurl, shelly_devices
 except ImportError:
     try:
         from _shelly_conf import shelly_host, shelly_devices
@@ -36,7 +36,7 @@ else:
     for num in trange(len(shelly_devices.idn)):
         try:
             response = requests.post(
-                shelly_host.url_device_status,
+                shelly_rqurl.device_status,
                 data={'id': shelly_devices.idn[num][0], 'auth_key': shelly_host.auth_key}
                 )
         except Exception as this_ex:
@@ -45,7 +45,7 @@ else:
             print("Please check the IDs and the url in your my_conf.py file.")
             raise this_ex
         
-        # decide the response to a json dictionary
+        # get the response to a json dictionary
         content = response.json()
 
         # grab name, watthours and counters from the response

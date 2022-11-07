@@ -1,4 +1,4 @@
-## Shelly Cloud Example 1
+## Shelly Cloud Example 2
 
 This example collects the current power and counter values from one or many shelly Plug S devices which are connected to the shelly cloud.
 
